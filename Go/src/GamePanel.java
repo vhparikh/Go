@@ -6,8 +6,11 @@ import java.awt.Graphics;
 public class GamePanel extends JPanel {
 	
 	JFrame frame = new JFrame();
-	
+
 	int dim = 9;
+	int w = 800;
+	int h = 800;
+	int d = 800;
 	
 	
 	
@@ -21,13 +24,13 @@ public class GamePanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		g.drawLine(100, 100, frame.getHeight() - 100, 100);
-		g.drawLine(100, 100, 100, frame.getHeight() - 100);
-		g.drawLine(frame.getHeight() - 100, 100, frame.getHeight() - 100, frame.getHeight() - 100);
-		g.drawLine(100, frame.getHeight() - 100, frame.getHeight() - 100, frame.getHeight() - 100);
+		g.drawLine(100, 100, d - 100, 100);
+		g.drawLine(100, 100, 100, d - 100);
+		g.drawLine(d - 100, 100, d - 100, d - 100);
+		g.drawLine(100, d - 100, d - 100, d - 100);
 		
-		for (int i = frame.getHeight() / dim; i < frame.getHeight() - 100; i += (frame.getWidth() - 100) / dim / 2) {
-			g.drawLine(i, 100, i, frame.getHeight() - 100);
+		for (int i = 100; i < d - 100; i += (d - 100) / dim) {
+			g.drawLine(i, 100, i, d - 100);
 		}
 		
 	}

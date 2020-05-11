@@ -7,8 +7,8 @@ public class Game {
 	GamePanel p = new GamePanel(f);
 	
 	public Game() {
-		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		f.setUndecorated(true);
+		f.setSize(800, 800);
+//		f.setUndecorated(true);
 		
 		
 		f.add(p);
