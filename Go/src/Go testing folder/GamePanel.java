@@ -35,8 +35,6 @@ public class GamePanel extends JPanel {
 			d = i;
 		}
 		
-		System.out.println(dim);
-		
 		r = d - o;
 		w = d - o - o;
 		
@@ -63,73 +61,90 @@ public class GamePanel extends JPanel {
 		return null;
 	}
 	
-	public void checkLiberties(int player) {
+	public Point[] checkLiberties(Point p) {
+		Point[] ls = new Point[4];
+		
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
-				Point p = board[i][j];
-				Point r = null;
-				Point l = null;
-				Point u = null;
-				Point d = null;
-				
-				int op = -1;
-				
-				if (player == BLACK) {
-					op = WHITE;
-				} else if (player == WHITE) {
-					op = BLACK;
+				if (board[i][j].equals(p)) {
+					if (i-1 >= 0) {
+						ls[0] = board[i-1][j];
+					} else {
+						ls[0] = null;
+					}
+					if (i+1 < board.length) {
+						ls[1] = board[i+1][j];
+					} else {
+						ls[1] = null;
+					}
+					if (j-1 >= 0) {
+						ls[2] = board[i][j-1];
+					} else {
+						ls[2] = null;
+					}
+					if (j+1 < board[0].length) {
+						ls[3] = board[i][j+1];
+					} else {
+						ls[3] = null;
+					}
 				}
-				
-				if(j + 1 < board[0].length) {
-					r = board[i][j + 1];
-				} else {
-					r = new Point();
-					r.setState(op);
-				}
-				if (j - 1 >= 0) {
-					l = board[i][j - 1];
-				} else {
-					l = new Point();
-					l.setState(op);
-				}
-				if(i + 1 < board[0].length) {
-					u = board[i + 1][j];
-				} else {
-					u = new Point();
-					u.setState(op);
-				}
-				if (i - 1 >= 0) {
-					d = board[i - 1][j];
-				} else {
-					d = new Point();
-					d.setState(op);
-				}
-				
-				if((r.getState() == op) && (l.getState() == op) && 
-						(u.getState() == op) && (d.getState() == op)) {
-					p.setCptd(true);
-					p.setState(p.getBLANK());
-				}
+				return ls;
 			}
 		}
+		
+		return null;
 	}
 	
 	ArrayList<Group> groups = new ArrayList<Group>();
 	
 	public void group() {
-		for (int i = 0; i < groups.size(); i++) {
-			Point r =  null;
+		//sdf
+	}
+	
+	public void createGroups() {
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				Point p = board[i][j];
+				Point[] ls = checkLiberties(p);
+				
+				for (int k = 0; k < ls.length; k++) {
+					if(ls[k] != null && !ls[k].isGrouped()) {
+						if (ls[k].getState() == p.getState()) {
+							Group g = new Group();
+							g.getPts().add(p);
+							g.getPts().add(ls[k]);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void mergeGroups() {
+		for (int k = 0; k < groups.size(); k++) {
+			for (int i = 0; i < groups.get(k).getPts().size(); i++) {
+				Point p = groups.get(k).getPts().get(i);
+				
+				for (int j = 0; j < groups.size(); j++) {
+					if (!groups.get(j).equals(groups.get(k))) {
+						if (groups.get(j).getPts().contains(p)) {
+							for (int j2 = 0; j2 < board.length; j2++) {
+								groups.get(k).getPts().add(groups.get(j).getPts().get(j2));
+								groups.remove(groups.get(j));
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	
 	public void updateBoard() {
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[0].length; j++) {
-				Point p = board[i][j];
-				checkLiberties(p.getState());
-				group();
-			}
-		}
+		groups.removeAll(groups);
+		createGroups();
+		//mergeGroups();
+		
+		System.out.println(groups.size());
 	}
 	
 	public void paintComponent(Graphics g) {
