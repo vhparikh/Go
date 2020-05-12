@@ -34,9 +34,8 @@ public class Game implements MouseListener {
 
 	public void mousePressed(MouseEvent e) {
 		Point pt = p.getPoint(e.getX(), e.getY());
-		
 		if (pt != null) {
-			if (pt.getState() == BLANK && pt.isCptd()) {
+			if (pt.getState() == BLANK && !pt.isCptd()) {
 				if (turn == BLACK) {
 					pt.setState(BLACK);
 					turn = WHITE;
