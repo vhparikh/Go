@@ -63,22 +63,74 @@ public class GamePanel extends JPanel {
 				Point p = board[i][j];
 				if(p.getState() == p.getBLACK()) {
 					Point r = null;
-//					if(j+1  board[0].length ||) {
-//						r = board[i][j+1];
-//					}
-//					else {
-//						r = new Point();
-//						r.setState(r.getWHITE());
-//					}
-					Point l = board[i][j-1];
-					Point u = board[i-1][j];
-					Point d = board[i+1][j];
-					if(p.getState() == p.getBLACK()) {
-						if((r.getState() == r.getWHITE()) && (l.getState() == l.getWHITE()) &&
-								(u.getState() == u.getWHITE()) && (d.getState() == d.getWHITE())) {
-							p.setCptd(true);
-							p.setState(p.getBLANK());
-						}
+					Point l = null;
+					Point u = null;
+					Point d = null;
+					
+					if(j + 1 < board[0].length) {
+						r = board[i][j + 1];
+					} else {
+						r = new Point();
+						r.setState(r.getWHITE());
+					}
+					if (j - 1 > board[0].length) {
+						l = board[i][j - 1];
+					} else {
+						l = new Point();
+						l.setState(l.getWHITE());
+					}
+					if(i + 1 < board[0].length) {
+						u = board[i + 1][j];
+					} else {
+						u = new Point();
+						u.setState(u.getWHITE());
+					}
+					if (i - 1 > board[0].length) {
+						d = board[i - 1][j];
+					} else {
+						d = new Point();
+						d.setState(d.getWHITE());
+					}
+					if((r.getState() == r.getWHITE()) && (l.getState() == l.getWHITE()) &&
+							(u.getState() == u.getWHITE()) && (d.getState() == d.getWHITE())) {
+						p.setCptd(true);
+						p.setState(p.getBLANK());
+					}
+				} else if (p.getState() == p.getWHITE()) {
+					Point r = null;
+					Point l = null;
+					Point u = null;
+					Point d = null;
+					
+					if(j + 1 < board[0].length) {
+						r = board[i][j + 1];
+					} else {
+						r = new Point();
+						r.setState(r.getBLACK());
+					}
+					if (j - 1 > board[0].length) {
+						l = board[i][j - 1];
+					} else {
+						l = new Point();
+						l.setState(l.getBLACK());
+					}
+					if(i + 1 < board.length) {
+						u = board[i + 1][j];
+					} else {
+						u = new Point();
+						u.setState(u.getBLACK());
+					}
+					if (i - 1 > board.length) {
+						d = board[i + 1][j];
+					} else {
+						d = new Point();
+						d.setState(d.getBLACK());
+					}
+					if((r.getState() == r.getBLACK()) && (l.getState() == l.getBLACK()) &&
+							(u.getState() == u.getBLACK()) && (d.getState() == d.getBLACK())) {
+						System.out.println("testing");
+						p.setCptd(true);
+						p.setState(p.getBLANK());
 					}
 				}
 			}
