@@ -1,36 +1,96 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import java.awt.Graphics;
-
+@SuppressWarnings("serial")
 public class GamePanel extends JPanel {
+	JFrame f = new JFrame();
 	
-	JFrame frame = new JFrame();
-
-	int dim = 9;
-	int w = 800;
-	int h = 800;
-	int d = 800;
+	int l = 9; //lines
+	int d = 0; //width and height
+	int o = 0; //offset
+	int r = 0;
+	int w = 0; //width
 	
+	Point[][] board;
 	
-	
-	public GamePanel(JFrame f) {
+	public GamePanel(JFrame f, int dim) {
 		super();
-		frame = f;
 		
-		dim++;
+		this.f = f;
+		//l = dim;
+		
+		for (int i = 0; i < 100; i += l) {
+			o = i;
+		}
+		
+		for (int i = 0; i < 800; i += l) {
+			d = i;
+		}
+		
+		r = d - o;
+		w = d - o - o;
+		
+		board = new Point[l][l];
+		
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				board[i][j] = new Point();
+			}
+		}
+	}
+	
+	public Point getPoint(int x, int y) {
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				Point p = board[i][j];
+				
+				if ((Math.abs(x - p.getX()) < p.getD() / 2) && (Math.abs(y - p.getY()) < p.getD() / 2)) {
+					return board[i][j];
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	public void updateBoard() {
+		//sdf
 	}
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		g.drawLine(100, 100, d - 100, 100);
-		g.drawLine(100, 100, 100, d - 100);
-		g.drawLine(d - 100, 100, d - 100, d - 100);
-		g.drawLine(100, d - 100, d - 100, d - 100);
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(0, 0, f.getWidth(), f.getHeight());
 		
-		for (int i = 100; i < d - 100; i += (d - 100) / dim) {
-			g.drawLine(i, 100, i, d - 100);
+		g.setColor(Color.WHITE);
+		for (int i = o + d / l; i < d + o + d / l; i += d / l) {
+			g.drawLine(i, o + d / l, i, d + o);
+			g.drawLine(o + d / l, i, d + o, i);
+		}
+		
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				Point p = board[i][j];
+				
+				g.setColor(Color.WHITE);
+				
+				p.setX(o + (i+1) * (d / l));
+				p.setY(o + (j+1) * (d / l));
+				p.setD(w/l);
+				
+				if (p.getState() == p.getBLACK()) {
+					g.setColor(Color.BLACK);
+					g.fillOval(p.getX()-p.getD() / 2, p.getY()-p.getD() / 2, p.getD(), p.getD());
+				} else if (p.getState() == p.getWHITE()) {
+					g.setColor(Color.WHITE);
+					g.fillOval(p.getX()-p.getD() / 2, p.getY()-p.getD() / 2, p.getD(), p.getD());
+				}
+			}
 		}
 		
 	}
