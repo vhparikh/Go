@@ -27,7 +27,7 @@ public class GamePanel extends JPanel {
 			o = i;
 		}
 		
-		for (int i = 0; i < 800; i += l) {
+		for (int i = 0; i < 700; i += l) {
 			d = i;
 		}
 		
@@ -58,7 +58,31 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void updateBoard() {
-		//sdf
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				Point p = board[i][j];
+				if(p.getState() == p.getBLACK()) {
+					Point r = null;
+//					if(j+1  board[0].length ||) {
+//						r = board[i][j+1];
+//					}
+//					else {
+//						r = new Point();
+//						r.setState(r.getWHITE());
+//					}
+					Point l = board[i][j-1];
+					Point u = board[i-1][j];
+					Point d = board[i+1][j];
+					if(p.getState() == p.getBLACK()) {
+						if((r.getState() == r.getWHITE()) && (l.getState() == l.getWHITE()) &&
+								(u.getState() == u.getWHITE()) && (d.getState() == d.getWHITE())) {
+							p.setCptd(true);
+							p.setState(p.getBLANK());
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public void paintComponent(Graphics g) {
