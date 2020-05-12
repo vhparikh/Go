@@ -9,17 +9,13 @@ public class Game implements MouseListener {
 	
 	JFrame f = new JFrame();
 	
-	int dim = 900;
+	int dim = 700;
 	
 	GamePanel p = new GamePanel(f, dim);
 	
-	int BLANK = 0;
-	int BLACK = 1;
-	int WHITE = 2;
-	int turn = BLACK;
+	
 	
 	public Game() {
-		//f.setSize(dim, dim);
 		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		f.setUndecorated(false);
 		
@@ -35,13 +31,13 @@ public class Game implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		Point pt = p.getPoint(e.getX(), e.getY());
 		if (pt != null) {
-			if (pt.getState() == BLANK && !pt.isCptd()) {
-				if (turn == BLACK) {
-					pt.setState(BLACK);
-					turn = WHITE;
-				} else if (turn == WHITE) {
-					pt.setState(WHITE);
-					turn = BLACK;
+			if (pt.getState() == p.getBLANK()/* && !pt.isCptd()*/) {
+				if (p.getTurn() == p.getBLACK()) {
+					pt.setState(p.getBLACK());
+					p.setTurn(p.getWHITE());
+				} else if (p.getTurn() == p.getWHITE()) {
+					pt.setState(p.getWHITE());
+					p.setTurn(p.getBLACK());
 				}
 			}
 		}
