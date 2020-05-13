@@ -35,8 +35,6 @@ public class GamePanel extends JPanel {
 			d = i;
 		}
 		
-		System.out.println(dim);
-		
 		r = d - o;
 		w = d - o - o;
 		
@@ -44,7 +42,15 @@ public class GamePanel extends JPanel {
 		
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
-				board[i][j] = new Point();
+				Point p = new Point();
+				p.setX(i);
+				p.setCX(i);
+				p.setY(j);
+				p.setCY(j);
+				
+				System.out.println(i + ", " + j);
+				
+				board[i][j] = p;
 			}
 		}
 	}
@@ -63,73 +69,129 @@ public class GamePanel extends JPanel {
 		return null;
 	}
 	
-	public void checkLiberties(int player) {
+	public Point[] checkLiberties(Point p) {
+		Point[] ls = new Point[4];
+		
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
-				Point p = board[i][j];
-				Point r = null;
-				Point l = null;
-				Point u = null;
-				Point d = null;
-				
-				int op = -1;
-				
-				if (player == BLACK) {
-					op = WHITE;
-				} else if (player == WHITE) {
-					op = BLACK;
+				if (board[i][j].equals(p)) {
+					if (i-1 >= 0) {
+						ls[0] = board[i-1][j];
+					} else {
+						ls[0] = null;
+					}
+					if (i+1 < board.length) {
+						ls[1] = board[i+1][j];
+					} else {
+						ls[1] = null;
+					}
+					if (j-1 >= 0) {
+						ls[2] = board[i][j-1];
+					} else {
+						ls[2] = null;
+					}
+					if (j+1 < board[0].length) {
+						ls[3] = board[i][j+1];
+					} else {
+						ls[3] = null;
+					}
 				}
-				
-				if(j + 1 < board[0].length) {
-					r = board[i][j + 1];
-				} else {
-					r = new Point();
-					r.setState(op);
-				}
-				if (j - 1 >= 0) {
-					l = board[i][j - 1];
-				} else {
-					l = new Point();
-					l.setState(op);
-				}
-				if(i + 1 < board[0].length) {
-					u = board[i + 1][j];
-				} else {
-					u = new Point();
-					u.setState(op);
-				}
-				if (i - 1 >= 0) {
-					d = board[i - 1][j];
-				} else {
-					d = new Point();
-					d.setState(op);
-				}
-				
-				if((r.getState() == op) && (l.getState() == op) && 
-						(u.getState() == op) && (d.getState() == op)) {
-					p.setCptd(true);
-					p.setState(p.getBLANK());
-				}
+				return ls;
+			}
+		}
+		
+		return null;
+	}
+	
+	ArrayList<ArrayList<ArrayList<Point>>> gs = new ArrayList<ArrayList<ArrayList<Point>>>(); //groups
+	
+	public void printGl() {
+		System.out.println("<------------------->\n");
+		
+		String output = "";
+		
+		for (int i = 0; i < gs.size(); i++) {
+			for (int j = 0; j < gs.get(i).size(); j++) {
+//				output += gl.get(j).get(i).getPts().get(0).getState() + ", ";
+				output += gs.get(j).get(i).size() + ", ";
+			}
+			output += "\n";
+		}
+		
+		System.out.println(output);
+		
+		System.out.println("<------------------->\n");
+	}
+	
+	public void createGroups() {
+		for (int i = 0; i < board.length; i++) {
+			gs.add(new ArrayList<ArrayList<Point>>());
+			for (int j = 0; j < board[0].length; j++) {
+				ArrayList<Point> pts = new ArrayList<Point>();
+				pts.add(board[i][j]);
+				gs.get(i).add(pts);
 			}
 		}
 	}
 	
-	ArrayList<Group> groups = new ArrayList<Group>();
+	public void countShared() {
+		for (int i = 0; i < gs.size(); i++) {
+			for (int j = 0; j < gs.get(i).size(); j++) {
+				Point p = gs.get(j).get(i).get(0);
+				
+				if (i - 1 > 0) {
+					if (p.getState() == board[j][i - 1].getState()) {
+						if (p.getState() != 0) {
+							gs.get(j).get(i).add(gs.get(j).get(i - 1).get(0));
+						}
+					}
+				}
+				
+				if (i + 1 < board.length) {
+					if (p.getState() == board[j][i + 1].getState()) {
+						if (p.getState() != 0) {
+							gs.get(j).get(i).add(gs.get(j).get(i + 1).get(0));
+						}
+					}
+				}
+				
+				if (j - 1 > 0) {
+					if (p.getState() == board[j - 1][i].getState()) {
+						if (p.getState() != 0) {
+							gs.get(j).get(i).add(gs.get(j - 1).get(i).get(0));
+						}
+					}
+				}
+				
+				if (j + 1 < board.length) {
+					if (p.getState() == board[j + 1][i].getState()) {
+						if (p.getState() != 0) {
+							gs.get(j).get(i).add(gs.get(j + 1).get(i).get(0));
+						}
+					}
+				}
+				
+			}
+		}
+	}
 	
-	public void group() {
-		for (int i = 0; i < groups.size(); i++) {
-			Point r =  null;
+	public void mergeGroups() {
+		for (int i = 0; i < gs.size(); i++) {
+			for (int j = 0; j < gs.get(i).size(); j++) {
+				Point p = board[j][i];
+				//sdf
+			}
 		}
 	}
 	
 	public void updateBoard() {
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[0].length; j++) {
-				Point p = board[i][j];
-				checkLiberties(p.getState());
-				group();
-			}
-		}
+		gs.removeAll(gs);
+		createGroups();
+		printGl();
+		
+		countShared();
+		mergeGroups();
+		printGl();
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -146,7 +208,7 @@ public class GamePanel extends JPanel {
 		g.fillRect(o, o, d + d / l, d + d / l);
 		
 		g.setColor(Color.DARK_GRAY);
-		g.fillRect(o + d / l, o + d / l, d - d / l, d - d / l);
+		g.fillRect(o + d / l / 2, o + d / l / 2, d, d);
 		
 		g.setColor(Color.WHITE);
 		for (int i = o + d / l; i < d + o + d / l; i += d / l) {

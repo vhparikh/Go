@@ -1,5 +1,3 @@
-//test
-//hello there
 public class Main {
 
 	public Main() {

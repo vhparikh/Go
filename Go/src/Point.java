@@ -4,6 +4,9 @@ public class Point {
 	
 	int x = 0;
 	int y = 0;
+
+	int cx = 0;
+	int cy = 0;
 	int d = 0; //radius
 	
 	public final int BLANK = 0;
@@ -13,6 +16,22 @@ public class Point {
 	
 	public boolean cpt = false; //captured or nah
 	public boolean grouped = false;
+	
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
 	
 	public boolean isGrouped() {
 		return grouped;
@@ -46,20 +65,20 @@ public class Point {
 		this.state = state;
 	}
 
-	public int getX() {
-		return x;
+	public int getCX() {
+		return cx;
 	}
 
-	public void setX(int x) {
-		this.x = x;
+	public void setCX(int x) {
+		this.cx = x;
 	}
 
-	public int getY() {
-		return y;
+	public int getCY() {
+		return cy;
 	}
 
-	public void setY(int y) {
-		this.y = y;
+	public void setCY(int y) {
+		this.cy = y;
 	}
 
 	public int getBLANK() {

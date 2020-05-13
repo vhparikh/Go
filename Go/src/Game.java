@@ -13,8 +13,6 @@ public class Game implements MouseListener {
 	
 	GamePanel p = new GamePanel(f, dim);
 	
-	
-	
 	public Game() {
 		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		f.setUndecorated(false);
