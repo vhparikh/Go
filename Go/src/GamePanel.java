@@ -105,23 +105,23 @@ public class GamePanel extends JPanel {
 	
 	ArrayList<ArrayList<ArrayList<Point>>> gs = new ArrayList<ArrayList<ArrayList<Point>>>(); //groups
 	
-	public void printGl() {
-		System.out.println("<------------------->\n");
-		
-		String output = "";
-		
-		for (int i = 0; i < gs.size(); i++) {
-			for (int j = 0; j < gs.get(i).size(); j++) {
-//				output += gl.get(j).get(i).getPts().get(0).getState() + ", ";
-				output += gs.get(j).get(i).size() + ", ";
-			}
-			output += "\n";
-		}
-		
-		System.out.println(output);
-		
-		System.out.println("<------------------->\n");
-	}
+//	public void printGl() {
+//		System.out.println("<------------------->\n");
+//		
+//		String output = "";
+//		
+//		for (int i = 0; i < gs.size(); i++) {
+//			for (int j = 0; j < gs.get(i).size(); j++) {
+////				output += gl.get(j).get(i).getPts().get(0).getState() + ", ";
+//				output += gs.get(j).get(i).size() + ", ";
+//			}
+//			output += "\n";
+//		}
+//		
+//		System.out.println(output);
+//		
+//		System.out.println("<------------------->\n");
+//	}
 	
 	public void createGroups() {
 		for (int i = 0; i < board.length; i++) {
@@ -130,6 +130,35 @@ public class GamePanel extends JPanel {
 				ArrayList<Point> pts = new ArrayList<Point>();
 				pts.add(board[i][j]);
 				gs.get(i).add(pts);
+			}
+		}
+	}
+	
+	public void newMethod() {
+		ArrayList<ArrayList<Point>> row= new ArrayList<ArrayList<Point>>();
+		ArrayList<ArrayList<Point>> col = new ArrayList<ArrayList<Point>>();
+		
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board.length; j++) {
+				if (col.size() == 0) {
+					ArrayList<Point> pts = new ArrayList<Point>();
+					pts.add(board[i][j]);
+					col.add(pts);
+				} else {
+					if (board[i][j].getState() == board[i][j-1].getState()) {
+						col.get(col.size() - 1).add(board[i][j]);
+					}
+				}
+				
+				if (row.size() == 0) {
+					ArrayList<Point> pts = new ArrayList<Point>();
+					pts.add(board[i][j]);
+					row.add(pts);
+				} else {
+					if (board[i][j].getState() == board[i-1][j].getState()) {
+						row.get(row.size() - 1).add(board[i][j]);
+					}
+				}
 			}
 		}
 	}
@@ -186,12 +215,13 @@ public class GamePanel extends JPanel {
 	
 	public void updateBoard() {
 		gs.removeAll(gs);
-		createGroups();
-		printGl();
-		
-		countShared();
-		mergeGroups();
-		printGl();
+//		createGroups();
+//		//printGl();
+//		
+//		countShared();
+//		mergeGroups();
+		//printGl();
+		newMethod();
 	}
 	
 	public void paintComponent(Graphics g) {
