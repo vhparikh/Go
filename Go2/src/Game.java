@@ -1,3 +1,4 @@
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -13,7 +14,7 @@ import javax.swing.JLabel;
 public class Game implements MouseListener {
 	
 	JFrame f = new JFrame();
-	Container south = new Container();
+	Container north = new Container();
 	JLabel whiteScore = new JLabel("White Score: ");
 	JLabel blackScore = new JLabel("Black Score: ");
 	
@@ -30,13 +31,10 @@ public class Game implements MouseListener {
 		
 		f.getContentPane().setBackground(Color.DARK_GRAY);
 		
-		blackScore.setForeground(Color.WHITE);
-		whiteScore.setForeground(Color.WHITE);
-		
-		south.setLayout(new GridLayout(1,2));
-		south.add(whiteScore);
-		south.add(blackScore);
-		f.add(south, BorderLayout.SOUTH);
+		north.setLayout(new GridLayout(1,2));
+		north.add(whiteScore);
+		north.add(blackScore);
+		f.add(north, BorderLayout.NORTH);
 		
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
