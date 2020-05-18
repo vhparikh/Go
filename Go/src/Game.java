@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class Game implements MouseListener, KeyListener {
 
@@ -50,8 +51,8 @@ public class Game implements MouseListener, KeyListener {
 
 	public void mousePressed(MouseEvent e) {
 		Point pt = p.getPoint(e.getX(), e.getY());
-		if (pt != null) {
-			if (pt.getState() == p.getBLANK()) {
+		if (pt != null && pt.getState() == p.getBLANK()) {
+			if (p.isPlayValid(pt, p.getTurn())) {
 				if (p.getTurn() == p.getBLACK()) {
 					pt.setState(p.getBLACK());
 					p.setTurn(p.getWHITE());
@@ -59,13 +60,12 @@ public class Game implements MouseListener, KeyListener {
 					pt.setState(p.getWHITE());
 					p.setTurn(p.getBLACK());
 				}
+			} else {
+				JOptionPane.showConfirmDialog(f, "Move is invalid, please choose another move!");
 			}
 		}
 
 		p.updateBoard();
-		blackScore.setText("Black Score: " + p.updateScore(1));
-		whiteScore.setText("White Score: " + p.updateScore(2));
-
 		f.repaint();
 	}
 	

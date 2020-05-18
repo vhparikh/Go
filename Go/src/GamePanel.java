@@ -25,7 +25,10 @@ public class GamePanel extends JPanel {
 	public int BLACK = 1;
 	public int WHITE = 2;
 	public int turn = BLACK;
+	
 	ArrayList<Point> stack = new ArrayList<Point>();
+	
+	ArrayList<Point[][]> boards = new ArrayList<Point[][]>();
 
 	public GamePanel(JFrame frame, Dimension dim) {
 		super();
@@ -45,6 +48,25 @@ public class GamePanel extends JPanel {
 				board[i][j] = p;
 			}
 		}
+	}
+	
+	public boolean isPlayValid(Point pts, int player) {
+		Point[][] copy = board;
+		
+		for (int i = 0; i < copy.length; i++) {
+			for (int j = 0; j < copy[i].length; j++) {
+				if (copy[i][j].equals(pts)) {
+					copy[i][j].setState(player);
+				}
+			}
+		}
+		
+		for (int i = 0; i < boards.size(); i++) {
+			if (boards.get(i).equals(copy)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public Point getPoint(int x, int y) {
