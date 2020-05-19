@@ -1,7 +1,7 @@
 public class Main {
 
 	public Main() {
-		new Game();
+		new StartGame();
 	}
 	
 	public static void main(String[] args) {

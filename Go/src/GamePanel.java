@@ -55,14 +55,20 @@ public class GamePanel extends JPanel {
 		
 		for (int i = 0; i < copy.length; i++) {
 			for (int j = 0; j < copy[i].length; j++) {
+				copy[i][j] = copy[i][j];
 				if (copy[i][j].equals(pts)) {
 					copy[i][j].setState(player);
+					System.out.println("copy setted");
 				}
 			}
 		}
 		
+		updateBoard(copy);
+		System.out.println(boards.size());
+		
 		for (int i = 0; i < boards.size(); i++) {
 			if (boards.get(i).equals(copy)) {
+				System.out.println("same!");
 				return false;
 			}
 		}
@@ -83,71 +89,64 @@ public class GamePanel extends JPanel {
 		return null;
 	}
 
-	public void travelBoard() {
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board.length; j++) {
-				if (board[i][j].getState() != BLANK) {
-					stack.add(board[i][j]);
-					if (checkForCapture(board[i][j])) {
-						cleanStack();
-					}
-					stack.removeAll(stack);
-				}
-
-			}
+	public void cleanStack(Point[][] b) {
+		if (b == null) {
+			b = board;
 		}
-	}
-
-	public void cleanStack() {
+		
 		for (int i = 0; i < stack.size(); i++) {
-			for (int j = 0; j < board.length; j++) {
-				for (int k = 0; k < board.length; k++) {
-					if (board[j][k].equals(stack.get(i))) {
-						board[j][k].setState(BLANK);
+			for (int j = 0; j < b.length; j++) {
+				for (int k = 0; k < b.length; k++) {
+					if (b[j][k].equals(stack.get(i))) {
+						b[j][k].setState(BLANK);
 					}
 				}
 			}
 		}
 	}
 
-	public boolean checkForCapture(Point p) {
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board.length; j++) {
-				if (p == board[i][j]) {
-					if ((i - 1 >= 0) && (p.getState() == board[i - 1][j].getState())
-							&& (!stack.contains(board[i - 1][j]))) {
-						stack.add(board[i - 1][j]);
-						if (!checkForCapture(board[i - 1][j])) {
+	public boolean checkForCapture(Point[][] b, Point p) {
+		if (b == null) {
+			b = board;
+		}
+		
+		for (int i = 0; i < b.length; i++) {
+			for (int j = 0; j < b.length; j++) {
+				if (p == b[i][j]) {
+					if ((i - 1 >= 0) && (p.getState() == b[i - 1][j].getState())
+							&& (!stack.contains(b[i - 1][j]))) {
+						stack.add(b[i - 1][j]);
+						if (!checkForCapture(b, b[i - 1][j])) {
 							return false;
 						}
-					} else if ((i - 1 >= 0) && (board[i - 1][j].getState() == getBLANK())) {
+					} else if ((i - 1 >= 0) && (b[i - 1][j].getState() == getBLANK())) {
 						return false;
 					}
-					if ((i + 1 < board.length) && (p.getState() == board[i + 1][j].getState())
-							&& (!stack.contains(board[i + 1][j]))) {
-						stack.add(board[i + 1][j]);
-						if (!checkForCapture(board[i + 1][j])) {
+					if ((i + 1 < b.length) && (p.getState() == b[i + 1][j].getState())
+							&& (!stack.contains(b[i + 1][j]))) {
+						stack.add(b[i + 1][j]);
+						if (!checkForCapture(b, b[i + 1][j])) {
 							return false;
 						}
-					} else if ((i + 1 < board.length) && (board[i + 1][j].getState() == getBLANK())) {
+					} else if ((i + 1 < b.length) && (b[i + 1][j].getState() == getBLANK())) {
 						return false;
 					}
-					if ((j - 1 >= 0) && (p.getState() == board[i][j - 1].getState())
-							&& (!stack.contains(board[i][j - 1]))) {
-						stack.add(board[i][j - 1]);
-						if (!checkForCapture(board[i][j - 1])) {
+					if ((j - 1 >= 0) && (p.getState() == b[i][j - 1].getState())
+							&& (!stack.contains(b[i][j - 1]))) {
+						stack.add(b[i][j - 1]);
+						if (!checkForCapture(b, b[i][j - 1])) {
 							return false;
 						}
-					} else if ((j - 1 >= 0) && (board[i][j - 1].getState() == getBLANK())) {
+					} else if ((j - 1 >= 0) && (b[i][j - 1].getState() == getBLANK())) {
 						return false;
 					}
-					if ((j + 1 < board[0].length) && (p.getState() == board[i][j + 1].getState())
-							&& (!stack.contains(board[i][j + 1]))) {
-						stack.add(board[i][j + 1]);
-						if (!checkForCapture(board[i][j + 1])) {
+					if ((j + 1 < b[0].length) && (p.getState() == b[i][j + 1].getState())
+							&& (!stack.contains(b[i][j + 1]))) {
+						stack.add(b[i][j + 1]);
+						if (!checkForCapture(b, b[i][j + 1])) {
 							return false;
 						}
-					} else if ((j + 1 < board[0].length) && (board[i][j + 1].getState() == getBLANK())) {
+					} else if ((j + 1 < b[0].length) && (b[i][j + 1].getState() == getBLANK())) {
 						return false;
 					}
 					return true;
@@ -170,8 +169,27 @@ public class GamePanel extends JPanel {
 		return score;
 	}
 
-	public void updateBoard() {
-		travelBoard();
+	public void updateBoard(Point[][] b) {
+		if (b == null) {
+			b = board;
+		}
+		
+		for (int i = 0; i < b.length; i++) {
+			for (int j = 0; j < b.length; j++) {
+				if (b[i][j].getState() != BLANK) {
+					stack.add(b[i][j]);
+					if (checkForCapture(b, b[i][j])) {
+						cleanStack(b);
+					}
+					stack.removeAll(stack);
+				}
+
+			}
+		}
+		
+		if (b == board) {
+			boards.add(board);
+		}
 	}
 
 	public void setVars() {
@@ -206,6 +224,7 @@ public class GamePanel extends JPanel {
 		g.fillRect((int) o / 2, (int) o / 2, (int) (d), (int) (d));
 
 		g.setColor(Color.WHITE);
+		g.drawRect((int)o, (int)o, (int)(d - d / l), (int)(d - d / l));
 		for (int i = (int) (o + d / l); i < o + d - d / l; i += d / l) {
 			g.drawLine(i, (int) o, i, (int) d);
 			g.drawLine((int) o, i, (int) d, i);

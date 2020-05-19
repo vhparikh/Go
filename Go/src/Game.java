@@ -25,10 +25,10 @@ public class Game implements MouseListener, KeyListener {
 	GamePanel p = null;
 
 	public Game() {
-		f.setSize(800, 600);
-		f.setUndecorated(false);
+		//f.setSize(800, 600);
 		f.setLayout(new BorderLayout());
-		// f.setUndecorated(true);
+		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		f.setPreferredSize(new Dimension(800, 600));
 
 		p = new GamePanel(f, dim);
 		f.add(p, BorderLayout.CENTER);
@@ -53,6 +53,7 @@ public class Game implements MouseListener, KeyListener {
 		Point pt = p.getPoint(e.getX(), e.getY());
 		if (pt != null && pt.getState() == p.getBLANK()) {
 			if (p.isPlayValid(pt, p.getTurn())) {
+				System.out.println("changed");
 				if (p.getTurn() == p.getBLACK()) {
 					pt.setState(p.getBLACK());
 					p.setTurn(p.getWHITE());
@@ -60,12 +61,12 @@ public class Game implements MouseListener, KeyListener {
 					pt.setState(p.getWHITE());
 					p.setTurn(p.getBLACK());
 				}
+				p.updateBoard(null);
 			} else {
-				JOptionPane.showConfirmDialog(f, "Move is invalid, please choose another move!");
+				JOptionPane.showMessageDialog(f, "Move is invalid, please choose another move!");
+				return;
 			}
 		}
-
-		p.updateBoard();
 		f.repaint();
 	}
 	
