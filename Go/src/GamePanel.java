@@ -51,7 +51,7 @@ public class GamePanel extends JPanel {
 	}
 	
 	public boolean isPlayValid(Point pts, int player) {
-		Point[][] copy = board;
+		Point[][] copy = new Point[l][l];
 		
 		for (int i = 0; i < copy.length; i++) {
 			for (int j = 0; j < copy[i].length; j++) {
@@ -66,10 +66,19 @@ public class GamePanel extends JPanel {
 		updateBoard(copy);
 		System.out.println(boards.size());
 		
-		for (int i = 0; i < boards.size(); i++) {
-			if (boards.get(i).equals(copy)) {
-				System.out.println("same!");
-				return false;
+		for (int i = 0; i < boards.size() - 1; i++) {
+			for (int j = 0; j < boards.get(i).length; j++) {
+				for (int k = 0; k < boards.get(i)[0].length; k++) {
+					if (boards.get(i)[j][k].equals(copy[j][k])) {
+						System.out.println("same!");
+						i++;
+						j = 0;
+						k = 0;
+						if (i > boards.size() - 1) {
+							return false;
+						}
+					}
+				}
 			}
 		}
 		return true;

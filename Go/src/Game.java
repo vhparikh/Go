@@ -62,6 +62,7 @@ public class Game implements MouseListener, KeyListener {
 					p.setTurn(p.getBLACK());
 				}
 				p.updateBoard(null);
+				return;
 			} else {
 				JOptionPane.showMessageDialog(f, "Move is invalid, please choose another move!");
 				return;
