@@ -20,7 +20,7 @@ public class StartGame implements MouseListener, KeyListener {
 	
 	Container center = new Container();
 	JLabel gridText = new JLabel("Please Enter The Length Of The Board:", SwingConstants.CENTER);
-	JTextArea gridArea = new JTextArea("Length");
+	JTextArea gridArea = new JTextArea("9");
 	JButton start = new JButton("START!");
 	
 	public int bLength = -1; //board length
@@ -45,8 +45,6 @@ public class StartGame implements MouseListener, KeyListener {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		System.out.println("hello");
-		
 		if (e.getSource().equals(start)) {
 			/*if (gridArea.getText().contains("[^a-zA-Z0-9_-]")) {
 				JOptionPane.showMessageDialog(frame, "Please enter a number for the length.");
@@ -54,6 +52,13 @@ public class StartGame implements MouseListener, KeyListener {
 			
 			if (Pattern.matches("[a-zA-Z]+", gridArea.getText())) {
 				JOptionPane.showMessageDialog(frame, "Please enter a number for the length.");
+			} else {
+				if (Integer.parseInt(gridArea.getText()) >= 9) {
+					new Game(Integer.parseInt(gridArea.getText()));
+					frame.setVisible(false);
+				} else {
+					JOptionPane.showMessageDialog(frame, "Number has to be at least 9.");
+				}
 			}
 		}
 	}

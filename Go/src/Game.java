@@ -24,13 +24,13 @@ public class Game implements MouseListener, KeyListener {
 	// GamePanel p = new GamePanel(f, dim);
 	GamePanel p = null;
 
-	public Game() {
+	public Game(int length) {
 		//f.setSize(800, 600);
 		f.setLayout(new BorderLayout());
 		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		f.setPreferredSize(new Dimension(800, 600));
 
-		p = new GamePanel(f, dim);
+		p = new GamePanel(f, dim, length);
 		f.add(p, BorderLayout.CENTER);
 		p.addMouseListener(this);
 

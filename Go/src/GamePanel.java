@@ -12,10 +12,8 @@ public class GamePanel extends JPanel {
 
 	int l = 9; // lines
 	double d = 0; // width and height
-	double o = 0; // offset
-	double r = 0;
-	double w = 0; // width
-	double x = 0;
+	double dl = 0; //d divided by l
+	double x = 0; //content pane's height
 
 	Point[][] board;
 
@@ -30,10 +28,12 @@ public class GamePanel extends JPanel {
 	
 	ArrayList<Point[][]> boards = new ArrayList<Point[][]>();
 
-	public GamePanel(JFrame frame, Dimension dim) {
+	public GamePanel(JFrame frame, Dimension dim, int l) {
 		super();
 
 		f = frame;
+		
+		this.l = l;
 
 		board = new Point[l][l];
 
@@ -199,10 +199,7 @@ public class GamePanel extends JPanel {
 			d = i;
 		}
 		
-		o = d / l;
-
-		r = d - o;
-		w = d - o - o;
+		dl = d / l;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -218,16 +215,16 @@ public class GamePanel extends JPanel {
 		} else if (turn == WHITE) {
 			g.setColor(Color.WHITE);
 		}
-		g.fillRect((int) o / l, (int) o / l, (int) (d + (l-2) * o / l), (int) (d + (l-2) * o / l));
+		g.fillRect((int) dl / l, (int) dl / l, (int) (d + (l-2) * dl / l), (int) (d + (l-2) * dl / l));
 		
 		g.setColor(Color.DARK_GRAY);
-		g.fillRect((int) o / 2, (int) o / 2, (int) (d), (int) (d));
+		g.fillRect((int) dl / 2, (int) dl / 2, (int) (d), (int) (d));
 
 		g.setColor(Color.WHITE);
-		g.drawRect((int)o, (int)o, (int)(d - d / l), (int)(d - d / l));
-		for (int i = (int) (o + d / l); i < o + d - d / l; i += d / l) {
-			g.drawLine(i, (int) o, i, (int) d);
-			g.drawLine((int) o, i, (int) d, i);
+		g.drawRect((int)dl, (int)dl, (int)(d - d / l), (int)(d - d / l));
+		for (int i = (int) (dl + d / l); i < dl + d - d / l; i += d / l) {
+			g.drawLine(i, (int) dl, i, (int) d);
+			g.drawLine((int) dl, i, (int) d, i);
 		}
 
 		for (int i = 0; i < board.length; i++) {
@@ -236,9 +233,9 @@ public class GamePanel extends JPanel {
 
 				g.setColor(Color.WHITE);
 
-				p.setX(o + (i) * (d / l));
-				p.setY(o + (j) * (d / l));
-				p.setD(w / l);
+				p.setX(dl + (i) * (d / l));
+				p.setY(dl + (j) * (d / l));
+				p.setD((d - dl - dl) / l);
 
 				if (p.getState() == p.getBLACK()) {
 					g.setColor(Color.BLACK);
@@ -252,20 +249,21 @@ public class GamePanel extends JPanel {
 			}
 		}
 		
-		double lx = (d + (l-1) * o / l) - o + (f.getWidth() - (d + (l-1) * o / l)) / 2; //label x
+		double lx = (d + (l-1) * dl / l) - dl + (f.getWidth() - (d + (l-1) * dl / l)) / 2; //label x
 		double ly = (l / 4) * d / l; //label y
+		double ll = 200; //label length
 		
 		g.setColor(Color.WHITE);
-		g.fillRect((int)(lx), (int) (ly), (int)o * 2, (int)o * 2);
+		g.fillRect((int)(lx), (int) (ly), (int)(ll), (int)(ll));
 		
 		g.setColor(Color.BLACK);
-		g.fillRect((int)(lx), (int) (ly * l / 3), (int)o * 2, (int)o * 2);
+		g.fillRect((int)(lx), (int) (ly + 1.5 * ll), (int)(ll), (int)(ll));
 		
 		g.setColor(Color.WHITE);
-		g.drawString(updateScore(BLACK) + "", (int)(lx + o), (int)((ly * l / 3) + o));
+		g.drawString(updateScore(BLACK) + "", (int)(lx + ll / 2), (int)(ly + ll * 2));
 		
 		g.setColor(Color.BLACK);
-		g.drawString(updateScore(WHITE) + "", (int)(lx + o), (int)(ly + o));
+		g.drawString(updateScore(WHITE) + "", (int)(lx + ll / 2), (int)(ly + ll / 2));
 		 
 	}
 
