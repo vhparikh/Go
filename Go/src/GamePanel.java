@@ -49,40 +49,6 @@ public class GamePanel extends JPanel {
 			}
 		}
 	}
-	
-	public boolean isPlayValid(Point pts, int player) {
-		Point[][] copy = new Point[l][l];
-		
-		for (int i = 0; i < copy.length; i++) {
-			for (int j = 0; j < copy[i].length; j++) {
-				copy[i][j] = copy[i][j];
-				if (copy[i][j].equals(pts)) {
-					copy[i][j].setState(player);
-					System.out.println("copy setted");
-				}
-			}
-		}
-		
-		updateBoard(copy);
-		System.out.println(boards.size());
-		
-		for (int i = 0; i < boards.size() - 1; i++) {
-			for (int j = 0; j < boards.get(i).length; j++) {
-				for (int k = 0; k < boards.get(i)[0].length; k++) {
-					if (boards.get(i)[j][k].equals(copy[j][k])) {
-						System.out.println("same!");
-						i++;
-						j = 0;
-						k = 0;
-						if (i > boards.size() - 1) {
-							return false;
-						}
-					}
-				}
-			}
-		}
-		return true;
-	}
 
 	public Point getPoint(int x, int y) {
 		for (int i = 0; i < board.length; i++) {
@@ -90,7 +56,7 @@ public class GamePanel extends JPanel {
 				Point p = board[i][j];
 
 				if ((Math.abs(x - p.getX()) < p.getD() / 2) && (Math.abs(y - p.getY()) < p.getD() / 2)) {
-					return board[i][j];
+					return p;
 				}
 			}
 		}
@@ -210,6 +176,44 @@ public class GamePanel extends JPanel {
 		
 		dl = d / l;
 	}
+	
+	public void print(Point[][] b) {
+		String output = "";
+		output += "\n";
+		for (int i = 0; i < b.length; i++) {
+			for (int j = 0; j < b[0].length; j++) {
+				output += b[j][i].getState() + ",";
+			}
+			output += "\n";
+		}
+		System.out.println(output);
+	}
+	
+	public boolean isPlayValid(Point pts, int player) {
+		Point[][] copy = new Point[l][l];
+		
+		//clone board onto copy
+		for (int i = 0; i < copy.length; i++) {
+			for (int j = 0; j < copy.length; j++) {
+				copy[i][j] = new Point();
+				copy[i][j].setState(board[i][j].getState());
+			}
+		}
+		
+		//make move and update copy
+		copy[pts.getCX()][pts.getCY()].setState(player);
+		updateBoard(copy);
+		
+		//check if the boards are different if so then return accordingly
+		for (int i = 0; i < l; i++) {
+			for (int j = 0; j < l; j++) {
+				if (copy[i][j].getState() != board[i][j].getState()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -239,8 +243,6 @@ public class GamePanel extends JPanel {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
 				Point p = board[i][j];
-
-				g.setColor(Color.WHITE);
 
 				p.setX(dl + (i) * (d / l));
 				p.setY(dl + (j) * (d / l));

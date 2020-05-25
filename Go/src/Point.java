@@ -1,10 +1,6 @@
-
-
 public class Point {
-	
 	double x = 0;
 	double y = 0;
-
 	int cx = 0;
 	int cy = 0;
 	double d = 0; //radius

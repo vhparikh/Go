@@ -32,7 +32,6 @@ public class StartGame implements MouseListener, KeyListener {
 		
 		center.setLayout(new GridLayout(3, 1));
 		center.add(gridText);
-//		gridText.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		center.add(gridArea);
 		center.add(start);
 		start.addMouseListener(this);
@@ -46,10 +45,6 @@ public class StartGame implements MouseListener, KeyListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (e.getSource().equals(start)) {
-			/*if (gridArea.getText().contains("[^a-zA-Z0-9_-]")) {
-				JOptionPane.showMessageDialog(frame, "Please enter a number for the length.");
-			}*/
-			
 			if (Pattern.matches("[a-zA-Z]+", gridArea.getText())) {
 				JOptionPane.showMessageDialog(frame, "Please enter a number for the length.");
 			} else {
