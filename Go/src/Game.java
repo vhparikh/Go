@@ -1,7 +1,6 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -9,27 +8,22 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class Game implements MouseListener, KeyListener {
 
 	JFrame f = new JFrame();
-	Container south = new Container();
-	JLabel whiteScore = new JLabel("White Score: ");
-	JLabel blackScore = new JLabel("Black Score: ");
-
+	
 	Dimension dim = new Dimension(800, 600);
-
-	// GamePanel p = new GamePanel(f, dim);
-	GamePanel p = null;
+	GamePanel p = null; //panel
 
 	public Game(int length) {
 		f.setLayout(new BorderLayout()); //border layout
 		f.setExtendedState(JFrame.MAXIMIZED_BOTH); //full screen
-		f.getContentPane().setBackground(Color.DARK_GRAY);
 		f.addKeyListener(this);
+		f.setResizable(false);
 		
+		//add panel to frame and add mouse listener to panel
 		p = new GamePanel(f, dim, length);
 		f.add(p, BorderLayout.CENTER);
 		p.addMouseListener(this);
@@ -41,7 +35,7 @@ public class Game implements MouseListener, KeyListener {
 	public void mousePressed(MouseEvent e) {
 		Point pt = p.getPoint(e.getX(), e.getY()); //get the point
 		if (pt != null && pt.getState() == p.getBLANK()) { //if the point is valid
-			if (p.isPlayValid(pt, p.getTurn())) { //only play if the move is valid
+			if (!p.checkKO(pt, p.getTurn())) { //only play if the move is valid
 				if (p.getTurn() == p.getBLACK()) { //make valid black turn
 					pt.setState(p.getBLACK());
 					p.setTurn(p.getWHITE());
@@ -54,14 +48,15 @@ public class Game implements MouseListener, KeyListener {
 				//error message
 				JOptionPane.showMessageDialog(f, "Move is invalid, please choose another move!");
 			}
-		} else if (p.getEndGame(e.getX(), e.getY())) {
-			int yesno = -1;
+		} else if (p.getEndGame(e.getX(), e.getY())) { //if the player clicked on endgame button
+			int yesno = -1; //did the player select yes or no
 			if (p.getTurn() == 1) {
 				yesno = JOptionPane.showConfirmDialog(f, "Black wants to end the game, End Game?");
 			} else if (p.getTurn() == 2) {
 				yesno = JOptionPane.showConfirmDialog(f, "White wants to end the game, End Game?");
 			}
-			if (yesno == JOptionPane.YES_OPTION) {
+			if (yesno == JOptionPane.YES_OPTION) { //if the player chose white
+				//display who won and exit the game
 				if (p.getScore(1) > p.getScore(2)) {
 					JOptionPane.showMessageDialog(f, "Black wins!");
 				} else if (p.getScore(1) < p.getScore(2)) {

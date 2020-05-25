@@ -15,21 +15,27 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 public class StartGame implements MouseListener, KeyListener {
-
+	//jframes
 	JFrame frame = new JFrame();
 	
+	//center container
 	Container center = new Container();
+	//label for instructions
 	JLabel gridText = new JLabel("Please Enter The Length Of The Board:", SwingConstants.CENTER);
+	//user input for the length of the go board
 	JTextArea gridArea = new JTextArea("9");
+	//button for submitting the length
 	JButton start = new JButton("START!");
-	
-	public int bLength = -1; //board length
-	
+	//board length
+	public int bLength = -1; 
+
 	public StartGame() {
+		//basic setup
 		frame.setSize(250, 300);
 		frame.setResizable(false);
 		frame.setLayout(new BorderLayout());
 		
+		//adding the center to the frame
 		center.setLayout(new GridLayout(3, 1));
 		center.add(gridText);
 		center.add(gridArea);
@@ -38,16 +44,20 @@ public class StartGame implements MouseListener, KeyListener {
 		center.setBounds(100, 100, 100, 100);
 		frame.add(center, BorderLayout.CENTER);
 		
+		//closing with the bar at the top and visibility
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
+		//did the user submit the length
 		if (e.getSource().equals(start)) {
+			//if the input doesnt only contains numbers
 			if (Pattern.matches("[a-zA-Z]+", gridArea.getText())) {
 				JOptionPane.showMessageDialog(frame, "Please enter a number for the length.");
-			} else {
+			} else { //if the input only contains numbers
+				//if the length is less than 9 give error message if not open game window
 				if (Integer.parseInt(gridArea.getText()) >= 9) {
 					new Game(Integer.parseInt(gridArea.getText()));
 					frame.setVisible(false);

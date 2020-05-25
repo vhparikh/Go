@@ -1,7 +1,7 @@
 public class Main {
 
 	public Main() {
-		new StartGame();
+		new StartGame(); //open starting window
 		//new Game(9);
 	}
 	

@@ -1,25 +1,16 @@
 public class Point {
-	double x = 0;
-	double y = 0;
-	int cx = 0;
-	int cy = 0;
+	double x = 0; //x in the board
+	double y = 0; //y in the board
+	int cx = 0; //x in the screen
+	int cy = 0; //y in the screen
 	double d = 0; //radius
 	
-	public final int BLANK = 0;
-	public final int BLACK = 1;
-	public final int WHITE = 2;
-	public int state = BLANK;
+	public final int BLANK = 0; //blank state
+	public final int BLACK = 1; //black state
+	public final int WHITE = 2; //white state
+	public int state = BLANK; //what state is it in
 	
-	public int owner = BLANK;
-	
-	public int getOwner() {
-		return owner;
-	}
-	
-	public void setOwner(int owner) {
-		this.owner = owner;
-	}
-	
+	//getters and setters
 	public double getX() {
 		return x;
 	}
