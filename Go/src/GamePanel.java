@@ -14,6 +14,10 @@ public class GamePanel extends JPanel {
 	double d = 0; // width and height
 	double dl = 0; //d divided by l
 	double x = 0; //content pane's height
+	
+	double lx = 0; //label x
+	double ly = 0; //label y
+	double ll = 0; //label length
 
 	Point[][] board;
 
@@ -60,8 +64,15 @@ public class GamePanel extends JPanel {
 				}
 			}
 		}
-
 		return null;
+	}
+	
+	public boolean getEndGame(int mx, int my) {
+		double y = ly + 3 * ll;
+		if (mx > lx && mx < lx + ll && my > y && my < y + ll) {
+			return true;
+		}
+		return false;
 	}
 
 	public void cleanStack(Point[][] b) {
@@ -131,7 +142,7 @@ public class GamePanel extends JPanel {
 		return false;
 	}
 
-	public int updateScore(int player) {
+	public int getScore(int player) {
 		int score = 0;
 
 		for (int i = 0; i < board.length; i++) {
@@ -166,28 +177,6 @@ public class GamePanel extends JPanel {
 			boards.add(board);
 		}
 	}
-
-	public void setVars() {
-		x = f.getContentPane().getHeight();
-		
-		for (int i = 0; i < x - x / l; i += l) {
-			d = i;
-		}
-		
-		dl = d / l;
-	}
-	
-	public void print(Point[][] b) {
-		String output = "";
-		output += "\n";
-		for (int i = 0; i < b.length; i++) {
-			for (int j = 0; j < b[0].length; j++) {
-				output += b[j][i].getState() + ",";
-			}
-			output += "\n";
-		}
-		System.out.println(output);
-	}
 	
 	public boolean isPlayValid(Point pts, int player) {
 		Point[][] copy = new Point[l][l];
@@ -215,6 +204,19 @@ public class GamePanel extends JPanel {
 		return false;
 	}
 
+	public void setVars() {
+		x = f.getContentPane().getHeight();
+		
+		for (int i = 0; i < x - x / l; i += l) {
+			d = i;
+		}
+		
+		dl = d / l;
+		lx = (d + (l-1) * dl / l) - dl + (f.getWidth() - (d + (l-1) * dl / l)) / 2;
+		ly = dl; 
+		ll = dl * 2;
+	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -260,22 +262,21 @@ public class GamePanel extends JPanel {
 			}
 		}
 		
-		double lx = (d + (l-1) * dl / l) - dl + (f.getWidth() - (d + (l-1) * dl / l)) / 2; //label x
-		double ly = (l / 4) * d / l; //label y
-		double ll = 200; //label length
-		
 		g.setColor(Color.WHITE);
 		g.fillRect((int)(lx), (int) (ly), (int)(ll), (int)(ll));
 		
 		g.setColor(Color.BLACK);
 		g.fillRect((int)(lx), (int) (ly + 1.5 * ll), (int)(ll), (int)(ll));
 		
+		g.setColor(Color.RED);
+		g.fillRect((int)(lx), (int) (ly + 3 * ll), (int)(ll), (int)(ll));
+		
 		g.setColor(Color.WHITE);
-		g.drawString(updateScore(BLACK) + "", (int)(lx + ll / 2), (int)(ly + ll * 2));
+		g.drawString(getScore(BLACK) + "", (int)(lx + ll / 2), (int)(ly + ll * 2));
 		
 		g.setColor(Color.BLACK);
-		g.drawString(updateScore(WHITE) + "", (int)(lx + ll / 2), (int)(ly + ll / 2));
-		 
+		g.drawString(getScore(WHITE) + "", (int)(lx + ll / 2), (int)(ly + ll / 2));
+		g.drawString("End Game", (int)(lx + ll / 3), (int)(ly + ll * 3.5));
 	}
 
 	public int getBLANK() {

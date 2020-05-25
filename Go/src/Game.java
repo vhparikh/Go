@@ -54,6 +54,23 @@ public class Game implements MouseListener, KeyListener {
 				//error message
 				JOptionPane.showMessageDialog(f, "Move is invalid, please choose another move!");
 			}
+		} else if (p.getEndGame(e.getX(), e.getY())) {
+			int yesno = -1;
+			if (p.getTurn() == 1) {
+				yesno = JOptionPane.showConfirmDialog(f, "Black wants to end the game, End Game?");
+			} else if (p.getTurn() == 2) {
+				yesno = JOptionPane.showConfirmDialog(f, "White wants to end the game, End Game?");
+			}
+			if (yesno == JOptionPane.YES_OPTION) {
+				if (p.getScore(1) > p.getScore(2)) {
+					JOptionPane.showMessageDialog(f, "Black wins!");
+				} else if (p.getScore(1) < p.getScore(2)) {
+					JOptionPane.showMessageDialog(f, "White wins!");
+				} else if (p.getScore(1) == p.getScore(2)) {
+					JOptionPane.showMessageDialog(f, "Tie Game!");
+				}
+				System.exit(0);
+			}
 		}
 		f.repaint(); //update screen
 	}
