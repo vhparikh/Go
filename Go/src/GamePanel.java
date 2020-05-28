@@ -29,9 +29,10 @@ public class GamePanel extends JPanel {
 	public int WHITE = 2;
 	
 	public int turn = BLACK; //whose turn is it
-	
-	ArrayList<Point> stack = new ArrayList<Point>(); //vatsal do this PLS
 
+	//Array list to keep track of pieces that are part of a group which is potentially captured
+	ArrayList<Point> stack = new ArrayList<Point>(); 
+	
 	public GamePanel(JFrame frame, Dimension dim, int l) {
 		super();
 		f = frame; //get frame
@@ -70,59 +71,66 @@ public class GamePanel extends JPanel {
 		return false;
 	}
 
-	public void cleanStack(Point[][] b) { //DO THIS
+	//removes points which were captured
+	public void removePoints(Point[][] b) {
+		//default to board
 		if (b == null) {
 			b = board;
 		}
 		
+		//goes through the stack array list
 		for (int i = 0; i < stack.size(); i++) {
+			//goes through each point on the board
 			for (int j = 0; j < b.length; j++) {
 				for (int k = 0; k < b.length; k++) {
-					if (b[j][k].equals(stack.get(i))) {
-						b[j][k].setState(BLANK);
+					if (b[j][k].equals(stack.get(i))) { //if the point is in the stack then:
+						b[j][k].setState(BLANK); //clear it from the board as it was captured
 					}
 				}
 			}
 		}
 	}
 
-	public boolean checkForCapture(Point[][] b, Point p) { //DO THIS
+	//check to see if a piece or if a group of pieces are captured by the opponent
+	public boolean checkForCapture(Point[][] b, Point p) {
+		//default to board
 		if (b == null) {
 			b = board;
 		}
 		
+		//go through the board to find the point
 		for (int i = 0; i < b.length; i++) {
 			for (int j = 0; j < b.length; j++) {
-				if (p == b[i][j]) {
+				if (p == b[i][j]) { //if the point is found then:
 					if ((i - 1 >= 0) && (p.getState() == b[i - 1][j].getState())
-							&& (!stack.contains(b[i - 1][j]))) {
-						stack.add(b[i - 1][j]);
-						if (!checkForCapture(b, b[i - 1][j])) {
-							return false;
+							&& (!stack.contains(b[i - 1][j]))) { //if the point above point p is the same color and isn't already in the stack then:
+						stack.add(b[i - 1][j]); //add the point to the stack array list
+						if (!checkForCapture(b, b[i - 1][j])) { //run checkcapture on that point and if it returns false then:
+							return false; //return and end check
 						}
-					} else if ((i - 1 >= 0) && (b[i - 1][j].getState() == getBLANK())) {
+					} else if ((i - 1 >= 0) && (b[i - 1][j].getState() == getBLANK())) { //otherwise if the point above is blank then return false
 						return false;
 					}
-					if ((i + 1 < b.length) && (p.getState() == b[i + 1][j].getState())
-							&& (!stack.contains(b[i + 1][j]))) {
-						stack.add(b[i + 1][j]);
-						if (!checkForCapture(b, b[i + 1][j])) {
-							return false;
+					if ((i + 1 < b.length) && (p.getState() == b[i + 1][j].getState()) 
+							&& (!stack.contains(b[i + 1][j]))) { //same as first one except for the point below
+						stack.add(b[i + 1][j]); 
+						if (!checkForCapture(b, b[i + 1][j])) { 
+							return false; 
 						}
-					} else if ((i + 1 < b.length) && (b[i + 1][j].getState() == getBLANK())) {
+					} else if ((i + 1 < b.length) && (b[i + 1][j].getState() == getBLANK())) { 
 						return false;
 					}
 					if ((j - 1 >= 0) && (p.getState() == b[i][j - 1].getState())
-							&& (!stack.contains(b[i][j - 1]))) {
+							&& (!stack.contains(b[i][j - 1]))) { //same as first one except for the point to the left
 						stack.add(b[i][j - 1]);
-						if (!checkForCapture(b, b[i][j - 1])) {
-							return false;
+						if (!checkForCapture(b, b[i][j - 1])) { 
+							return false; 
 						}
 					} else if ((j - 1 >= 0) && (b[i][j - 1].getState() == getBLANK())) {
 						return false;
 					}
 					if ((j + 1 < b[0].length) && (p.getState() == b[i][j + 1].getState())
-							&& (!stack.contains(b[i][j + 1]))) {
+							&& (!stack.contains(b[i][j + 1]))) { //same as first on except for the point to the right
 						stack.add(b[i][j + 1]);
 						if (!checkForCapture(b, b[i][j + 1])) {
 							return false;
@@ -150,21 +158,22 @@ public class GamePanel extends JPanel {
 		return score;
 	}
 
-	public void updateBoard(Point[][] b) {//DO THIS
+	//updates the board
+	public void updateBoard(Point[][] b) {
 		//default to board
 		if (b == null) {
 			b = board;
 		}
 		
-		//explain pls
+		//goes through the board
 		for (int i = 0; i < b.length; i++) {
 			for (int j = 0; j < b.length; j++) {
-				if (b[i][j].getState() != BLANK) {
-					stack.add(b[i][j]);
-					if (checkForCapture(b, b[i][j])) {
-						cleanStack(b);
+				if (b[i][j].getState() != BLANK) { //if the point is not blank then:
+					stack.add(b[i][j]); //add it to the stack
+					if (checkForCapture(b, b[i][j])) { //run checkcapture if it is true remove all the points that are in the stack array list
+						removePoints(b);
 					}
-					stack.removeAll(stack);
+					stack.removeAll(stack); //remove all the values within array list
 				}
 			}
 		}
