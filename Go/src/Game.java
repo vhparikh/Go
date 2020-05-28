@@ -21,7 +21,7 @@ public class Game implements MouseListener, KeyListener {
 		f.setLayout(new BorderLayout()); //border layout
 		f.setExtendedState(JFrame.MAXIMIZED_BOTH); //full screen
 		f.addKeyListener(this);
-		f.setResizable(false);
+		f.setResizable(true);
 		
 		//add panel to frame and add mouse listener to panel
 		p = new GamePanel(f, dim, length);
