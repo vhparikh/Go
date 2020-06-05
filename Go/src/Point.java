@@ -1,16 +1,26 @@
-public class Point {
-	double x = 0; //x in the board
-	double y = 0; //y in the board
-	int cx = 0; //x in the screen
-	int cy = 0; //y in the screen
-	double d = 0; //radius
-	
-	public final int BLANK = 0; //blank state
-	public final int BLACK = 1; //black state
-	public final int WHITE = 2; //white state
-	public int state = BLANK; //what state is it in
-	
-	//getters and setters
+
+/*
+ * Sunil Jain and Vatsal Parikh's Point class for Go Game for Java Class.
+ * Edited: 6/4/20.
+ * 
+ * Summary: 
+ * Holds all of the point's nessesary data and all of the getters and setters.
+ */
+
+public class Point
+{
+	double x = 0; // x in the board
+	double y = 0; // y in the board
+	int cx = 0; // x in the screen
+	int cy = 0; // y in the screen
+	double d = 0; // radius
+
+	public final int BLANK = 0; // blank state
+	public final int BLACK = 1; // black state
+	public final int WHITE = 2; // white state
+	public int state = BLANK; // what state is it in
+
+	// getters and setters
 	public double getX() {
 		return x;
 	}
@@ -26,7 +36,7 @@ public class Point {
 	public void setY(double y) {
 		this.y = y;
 	}
-		
+
 	public double getD() {
 		return d;
 	}
