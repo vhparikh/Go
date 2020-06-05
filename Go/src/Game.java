@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 public class Game implements MouseListener, KeyListener
 {
 
-	JFrame f = new JFrame();
+	JFrame f = new JFrame("Go");
 
 	Dimension dim = new Dimension(800, 600);
 	GamePanel p = null; // panel

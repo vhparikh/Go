@@ -25,7 +25,7 @@ import javax.swing.SwingConstants;
 public class StartGame implements MouseListener, KeyListener
 {
 	// jframes
-	JFrame frame = new JFrame();
+	JFrame frame = new JFrame("Start");
 
 	// center container
 	Container center = new Container();
